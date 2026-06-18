@@ -23,26 +23,37 @@ class World:
         rows = len(self.matrix)
         cols = len(self.matrix[0])
 
-        return sum(
-            self.matrix[nx][ny]
-            for nx in range(max(0, x - 1), min(rows, x + 2))
-            for ny in range(max(0, y - 1), min(cols, y + 2))
-            if (nx, ny) != (x, y)
-        )
+        total = 0
+
+        for nx in range(max(0, x - 1), min(rows, x + 2)):
+            for ny in range(max(0, y - 1), min(cols, y + 2)):
+
+                if (nx, ny) == (x, y):
+                    continue
+
+                total += self.matrix[nx][ny]
+
+        return total
 
     def step(self):
         new_matrix = [row[:] for row in self.matrix]
 
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
+
                 neighbors = self.count_neighbors(i, j)
 
-                if self.matrix[i][j] == 1:
-                    if neighbors not in (2, 3):
-                        new_matrix[i][j] = 0
-                else:
-                    if neighbors == 3:
-                        new_matrix[i][j] = 1
+                if self.matrix[i][j] == 1 and neighbors < 2:
+                    new_matrix[i][j] = 0
+
+                if self.matrix[i][j] == 1 and neighbors in (2, 3):
+                    new_matrix[i][j] = 1
+
+                if self.matrix[i][j] == 1 and neighbors > 3:
+                    new_matrix[i][j] = 0
+
+                if self.matrix[i][j] == 0 and neighbors == 3:
+                    new_matrix[i][j] = 1
 
         self.matrix = new_matrix
 
