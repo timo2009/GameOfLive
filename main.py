@@ -5,7 +5,7 @@ CELL_SIZE = 10
 SIZE = 100
 FPS = 7
 RANDOM = True
-DENSITY = 0.1
+DENSITY = 0.5
 
 def render(screen, world):
     screen.fill((0, 0, 0))
